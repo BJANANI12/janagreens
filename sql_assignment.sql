@@ -1,247 +1,284 @@
--- =============================================
--- SQL ASSIGNMENT – All 50 Questions
--- Student: Janani B
--- =============================================
+-- SQL Assignment
+-- Name: Janani B
 
--- ── DATABASE & TABLE MANAGEMENT ──
+-- creating the database
+create database company_db;
+use company_db;
 
--- Q1. Create database
-CREATE DATABASE company_db;
+-- creating tables before starting the assignment
 
--- Q2. Select database
-USE company_db;
-
--- Q3. Create skills table
-CREATE TABLE skills (
-    skill_id INT AUTO_INCREMENT PRIMARY KEY,
-    skill_name VARCHAR(100) NOT NULL,
-    category VARCHAR(100)
+create table department (
+    dept_id int auto_increment primary key,
+    dept_name varchar(100) not null,
+    location varchar(100)
 );
 
--- Q4. Show all databases
-SHOW DATABASES;
+create table employee (
+    emp_id int auto_increment primary key,
+    first_name varchar(50),
+    last_name varchar(50),
+    email varchar(100),
+    hire_date date,
+    salary decimal(10,2),
+    dept_id int,
+    gender varchar(10),
+    foreign key (dept_id) references department(dept_id)
+);
 
--- Q5. Show all tables
-SHOW TABLES;
+create table project (
+    project_id int auto_increment primary key,
+    project_name varchar(100),
+    budget decimal(10,2),
+    dept_id int,
+    foreign key (dept_id) references department(dept_id)
+);
 
--- Q6. Rename table
-RENAME TABLE employee TO staff;
+-- inserting sample data
+insert into department (dept_name, location) values
+('HR', 'New York'),
+('IT', 'San Francisco'),
+('Finance', 'Chicago'),
+('Marketing', 'Boston');
 
--- ── DATA INSERTION ───
+insert into employee (first_name, last_name, email, hire_date, salary, dept_id, gender) values
+('John', 'Doe', 'john.doe@company.com', '2023-03-15', 72000.00, 2, 'Male'),
+('Jane', 'Smith', 'jane.smith@company.com', '2023-07-20', 65000.00, 1, 'Female'),
+('Mike', 'Johnson', 'mike.j@company.com', '2022-11-10', 55000.00, 3, 'Male'),
+('Sara', 'Lee', 'sara.lee@company.com', '2024-01-05', 78000.00, 2, 'Female'),
+('Tom', 'Brown', 'tom.b@company.com', '2021-06-01', 48000.00, 4, 'Male');
 
--- Q7. Insert Alice Green
-INSERT INTO employee (first_name, last_name, email, hire_date, salary, dept_id, gender)
-VALUES ('Alice', 'Green', 'alice.green@company.com', '2024-01-10', 62000.00, 4, 'Female');
+insert into project (project_name, budget, dept_id) values
+('Website Redesign', 75000.00, 2),
+('HR Portal', 30000.00, 1),
+('Budget Analysis', 45000.00, 3);
 
--- Q8. Insert multiple projects
-INSERT INTO project (project_name, budget, dept_id)
-VALUES 
-    ('Mobile App', 60000.00, 2),
-    ('Training Program', 25000.00, 1);
 
--- Q9. Add Sales department
-INSERT INTO department (dept_name, location)
-VALUES ('Sales', 'Boston');
+-- 1) create a new database called company_db
+create database company_db;
 
--- Q10. Insert Tom with only name and email
-INSERT INTO employee (first_name, email)
-VALUES ('Tom', 'tom@company.com');
+-- 2) select the database
+use company_db;
 
--- ── DATA RETRIEVAL ──
+-- 3) create skills table with skill_id, skill_name, category
+create table skills (
+    skill_id int auto_increment primary key,
+    skill_name varchar(100) not null,
+    category varchar(100)
+);
 
--- Q11. All records from employee
-SELECT * FROM employee;
+-- 4) show all databases
+show databases;
 
--- Q12. Select with aliases
-SELECT 
-    emp_id AS "Employee ID",
-    first_name AS "Name",
-    email AS "Email Address"
-FROM employee;
+-- 5) show all tables in company_db
+show tables;
 
--- Q13. Employees hired after Jan 1 2023
-SELECT * FROM employee
-WHERE hire_date > '2023-01-01';
+-- 6) rename employee table to staff
+rename table employee to staff;
 
--- Q14. Projects budget > 40000 ordered descending
-SELECT * FROM project
-WHERE budget > 40000.00
-ORDER BY budget DESC;
+-- 7) insert alice green into employee table
+insert into employee (first_name, last_name, email, hire_date, salary, dept_id, gender)
+values ('Alice', 'Green', 'alice.green@company.com', '2024-01-10', 62000.00, 4, 'Female');
 
--- Q15. Distinct locations
-SELECT DISTINCT location FROM department;
+-- 8) insert two projects at once
+insert into project (project_name, budget, dept_id)
+values ('Mobile App', 60000.00, 2),
+       ('Training Program', 25000.00, 1);
 
--- ── DATA MODIFICATION ──
+-- 9) add sales department to department table
+insert into department (dept_name, location)
+values ('Sales', 'Boston');
 
--- Q16. Add phone_number column
-ALTER TABLE employee
-ADD COLUMN phone_number VARCHAR(15) AFTER email;
+-- 10) insert tom with only first_name and email, rest will be null
+insert into employee (first_name, email)
+values ('Tom', 'tom@company.com');
 
--- Q17. Update John Doe salary
-UPDATE employee
-SET salary = 65000.00
-WHERE first_name = 'John' AND last_name = 'Doe';
+-- 11) get all records from employee table
+select * from employee;
 
--- Q18. Set gender of IT dept employees
-UPDATE employee
-SET gender = 'Other'
-WHERE dept_id = 2;
+-- 12) select emp_id, first_name, email with custom column names
+select emp_id as "Employee ID",
+       first_name as "Name",
+       email as "Email Address"
+from employee;
 
--- Q19. Drop phone_number column
-ALTER TABLE employee
-DROP COLUMN phone_number;
+-- 13) employees hired after january 1 2023
+select * from employee
+where hire_date > '2023-01-01';
 
--- ── FILTERING & CONDITIONS ──
+-- 14) projects with budget more than 40000, highest first
+select * from project
+where budget > 40000
+order by budget desc;
 
--- Q20. Salary between 60000 and 80000
-SELECT * FROM employee
-WHERE salary BETWEEN 60000 AND 80000;
+-- 15) show unique locations from department table
+select distinct location from department;
 
--- Q21. First name starts with J
-SELECT * FROM employee
-WHERE first_name LIKE 'J%';
+-- 16) add phone_number column after email column
+alter table employee
+add column phone_number varchar(15) after email;
 
--- Q22. Projects in dept 1 or 2
-SELECT * FROM project
-WHERE dept_id IN (1, 2);
+-- 17) update salary of john doe to 65000
+update employee
+set salary = 65000
+where first_name = 'John' and last_name = 'Doe';
 
--- Q23. Email is not NULL
-SELECT * FROM employee
-WHERE email IS NOT NULL;
+-- 18) change gender to Other for all IT department employees
+update employee
+set gender = 'Other'
+where dept_id = 2;
 
--- Q24. Departments not in New York or Chicago
-SELECT * FROM department
-WHERE location NOT IN ('New York', 'Chicago');
+-- 19) remove phone_number column
+alter table employee
+drop column phone_number;
 
--- Q25. Employees hired in 2023
-SELECT * FROM employee
-WHERE YEAR(hire_date) = 2023;
+-- 20) employees with salary between 60000 and 80000
+select * from employee
+where salary between 60000 and 80000;
 
--- ── AGGREGATE FUNCTIONS ──
+-- 21) employees whose first name starts with J
+select * from employee
+where first_name like 'J%';
 
--- Q26. Total salary
-SELECT SUM(salary) AS total_salary FROM employee;
+-- 22) projects belonging to dept 1 or dept 2
+select * from project
+where dept_id in (1, 2);
 
--- Q27. Average budget
-SELECT AVG(budget) AS avg_budget FROM project;
+-- 23) employees who have email (not null)
+select * from employee
+where email is not null;
 
--- Q28. Highest salary
-SELECT MAX(salary) AS highest_salary FROM employee;
+-- 24) departments not located in new york or chicago
+select * from department
+where location not in ('New York', 'Chicago');
 
--- Q29. Count IT dept employees
-SELECT COUNT(*) AS it_employee_count
-FROM employee
-WHERE dept_id = 2;
+-- 25) employees hired in year 2023
+select * from employee
+where year(hire_date) = 2023;
 
--- Q30. Minimum budget
-SELECT MIN(budget) AS min_budget FROM project;
+-- 26) total salary of all employees
+select sum(salary) as total_salary
+from employee;
 
--- ── JOINS ───
+-- 27) average budget of all projects
+select avg(budget) as avg_budget
+from project;
 
--- Q31. Employees with department names
-SELECT e.emp_id, e.first_name, e.last_name, d.dept_name
-FROM employee e
-INNER JOIN department d ON e.dept_id = d.dept_id;
+-- 28) highest salary in the company
+select max(salary) as highest_salary
+from employee;
 
--- Q32. Departments with employee count
-SELECT d.dept_name, COUNT(e.emp_id) AS employee_count
-FROM department d
-LEFT JOIN employee e ON d.dept_id = e.dept_id
-GROUP BY d.dept_name;
+-- 29) how many employees are in IT department
+select count(*) as it_employee_count
+from employee
+where dept_id = 2;
 
--- Q33. Projects with department names
-SELECT p.project_name, p.budget, d.dept_name
-FROM project p
-INNER JOIN department d ON p.dept_id = d.dept_id;
+-- 30) lowest project budget
+select min(budget) as min_budget
+from project;
 
--- Q34. Employees in San Francisco
-SELECT e.first_name, e.last_name, d.location
-FROM employee e
-INNER JOIN department d ON e.dept_id = d.dept_id
-WHERE d.location = 'San Francisco';
+-- 31) get employee names along with their department names
+select e.emp_id, e.first_name, e.last_name, d.dept_name
+from employee e
+inner join department d on e.dept_id = d.dept_id;
 
--- Q35. Departments with no projects
-SELECT d.dept_name
-FROM department d
-LEFT JOIN project p ON d.dept_id = p.dept_id
-WHERE p.dept_id IS NULL;
+-- 32) list all departments and count of employees in each (including empty ones)
+select d.dept_name, count(e.emp_id) as employee_count
+from department d
+left join employee e on d.dept_id = e.dept_id
+group by d.dept_name;
 
--- ── STRING & NUMERIC FUNCTIONS ──
+-- 33) show projects with their department name
+select p.project_name, p.budget, d.dept_name
+from project p
+inner join department d on p.dept_id = d.dept_id;
 
--- Q36. Full name concatenation
-SELECT CONCAT(first_name, ' ', last_name) AS "Full Name"
-FROM employee;
+-- 34) employees working in san francisco
+select e.first_name, e.last_name, d.location
+from employee e
+inner join department d on e.dept_id = d.dept_id
+where d.location = 'San Francisco';
 
--- Q37. Department name uppercase
-SELECT UPPER(dept_name) AS dept_name FROM department;
+-- 35) departments that have no projects
+select d.dept_name
+from department d
+left join project p on d.dept_id = p.dept_id
+where p.dept_id is null;
 
--- Q38. First 3 characters of email
-SELECT first_name, LEFT(email, 3) AS email_prefix
-FROM employee;
+-- 36) combine first name and last name as full name
+select concat(first_name, ' ', last_name) as "Full Name"
+from employee;
 
--- Q39. Absolute value
-SELECT ABS(-50000) AS absolute_value;
+-- 37) convert department names to uppercase
+select upper(dept_name) as dept_name
+from department;
 
--- Q40. Round average salary
-SELECT ROUND(AVG(salary), 2) AS avg_salary FROM employee;
+-- 38) get first 3 letters of each employee email
+select first_name, left(email, 3) as email_prefix
+from employee;
 
--- ── ADVANCED QUERIES ─
+-- 39) absolute value of -50000
+select abs(-50000) as absolute_value;
 
--- Q41. First 3 employees by hire date desc
-SELECT * FROM employee
-ORDER BY hire_date DESC
-LIMIT 3;
+-- 40) average salary rounded to 2 decimal places
+select round(avg(salary), 2) as avg_salary
+from employee;
 
--- Q42. Second page (records 4-6)
-SELECT * FROM employee
-ORDER BY emp_id
-LIMIT 3 OFFSET 3;
+-- 41) show only first 3 employees ordered by latest hire date
+select * from employee
+order by hire_date desc
+limit 3;
 
--- Q43. Classify salary using IF
-SELECT first_name, salary,
-    IF(salary >= 70000, 'High', 'Low') AS salary_category
-FROM employee;
+-- 42) get records 4 to 6 (second page with 3 records per page)
+select * from employee
+order by emp_id
+limit 3 offset 3;
 
--- Q44. Categorize budget using CASE
-SELECT project_name, budget,
-    CASE
-        WHEN budget >= 60000 THEN 'Large'
-        WHEN budget >= 40000 THEN 'Medium'
-        ELSE 'Small'
-    END AS budget_category
-FROM project;
+-- 43) label salary as High if >= 70000 else Low
+select first_name, salary,
+if(salary >= 70000, 'High', 'Low') as salary_category
+from employee;
 
--- Q45. Total budget per department
-SELECT dept_id, SUM(budget) AS total_budget
-FROM project
-GROUP BY dept_id;
+-- 44) categorize project budgets as Large, Medium or Small
+select project_name, budget,
+case
+    when budget >= 60000 then 'Large'
+    when budget >= 40000 then 'Medium'
+    else 'Small'
+end as budget_category
+from project;
 
--- Q46. Employee with longest first name
-SELECT first_name, LENGTH(first_name) AS name_length
-FROM employee
-ORDER BY name_length DESC
-LIMIT 1;
+-- 45) total budget for each department
+select dept_id, sum(budget) as total_budget
+from project
+group by dept_id;
 
--- Q47. Employees hired in last 90 days
-SELECT * FROM employee
-WHERE hire_date >= DATE_SUB(CURDATE(), INTERVAL 90 DAY);
+-- 46) find employee with the longest first name
+select first_name, length(first_name) as name_length
+from employee
+order by name_length desc
+limit 1;
 
--- ── DELETION & CLEANUP 
+-- 47) employees joined in last 90 days
+select * from employee
+where hire_date >= date_sub(curdate(), interval 90 day);
 
--- Q48. Delete employees with salary < 60000
-DELETE FROM employee
-WHERE salary < 60000;
+-- 48) delete employees who earn less than 60000
+delete from employee
+where salary < 60000;
 
--- Q49. Drop project table
-DROP TABLE project;
+-- 49) drop the project table
+drop table project;
 
--- Q50. Restore and verify database
--- Step 1: Run in terminal → mysql -u root -p company_db < backup_file.sql
--- Step 2: Verify
-USE company_db;
-SHOW TABLES;
-SELECT table_name, table_rows
-FROM information_schema.tables
-WHERE table_schema = 'company_db';
--- Step 3: Delete DB after verification
-DROP DATABASE company_db;
+-- 50) restore database from backup and verify then delete
+-- step 1: open terminal and run this command
+-- mysql -u root -p company_db < backup_file.sql
+
+-- step 2: check if tables are restored correctly
+use company_db;
+show tables;
+select table_name, table_rows
+from information_schema.tables
+where table_schema = 'company_db';
+
+-- step 3: delete the database after verifying
+drop database company_db;
