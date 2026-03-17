@@ -1,9 +1,9 @@
 -- =============================================
 -- SQL ASSIGNMENT – All 50 Questions
--- Student: Janu
+-- Student: Janani B
 -- =============================================
 
--- ── DATABASE & TABLE MANAGEMENT ──────────────
+-- ── DATABASE & TABLE MANAGEMENT ──
 
 -- Q1. Create database
 CREATE DATABASE company_db;
@@ -27,7 +27,7 @@ SHOW TABLES;
 -- Q6. Rename table
 RENAME TABLE employee TO staff;
 
--- ── DATA INSERTION ────────────────────────────
+-- ── DATA INSERTION ───
 
 -- Q7. Insert Alice Green
 INSERT INTO employee (first_name, last_name, email, hire_date, salary, dept_id, gender)
@@ -47,7 +47,7 @@ VALUES ('Sales', 'Boston');
 INSERT INTO employee (first_name, email)
 VALUES ('Tom', 'tom@company.com');
 
--- ── DATA RETRIEVAL ────────────────────────────
+-- ── DATA RETRIEVAL ──
 
 -- Q11. All records from employee
 SELECT * FROM employee;
@@ -71,7 +71,7 @@ ORDER BY budget DESC;
 -- Q15. Distinct locations
 SELECT DISTINCT location FROM department;
 
--- ── DATA MODIFICATION ────────────────────────
+-- ── DATA MODIFICATION ──
 
 -- Q16. Add phone_number column
 ALTER TABLE employee
@@ -91,7 +91,7 @@ WHERE dept_id = 2;
 ALTER TABLE employee
 DROP COLUMN phone_number;
 
--- ── FILTERING & CONDITIONS ───────────────────
+-- ── FILTERING & CONDITIONS ──
 
 -- Q20. Salary between 60000 and 80000
 SELECT * FROM employee
@@ -117,7 +117,7 @@ WHERE location NOT IN ('New York', 'Chicago');
 SELECT * FROM employee
 WHERE YEAR(hire_date) = 2023;
 
--- ── AGGREGATE FUNCTIONS ──────────────────────
+-- ── AGGREGATE FUNCTIONS ──
 
 -- Q26. Total salary
 SELECT SUM(salary) AS total_salary FROM employee;
@@ -136,7 +136,7 @@ WHERE dept_id = 2;
 -- Q30. Minimum budget
 SELECT MIN(budget) AS min_budget FROM project;
 
--- ── JOINS ─────────────────────────────────────
+-- ── JOINS ───
 
 -- Q31. Employees with department names
 SELECT e.emp_id, e.first_name, e.last_name, d.dept_name
@@ -166,7 +166,7 @@ FROM department d
 LEFT JOIN project p ON d.dept_id = p.dept_id
 WHERE p.dept_id IS NULL;
 
--- ── STRING & NUMERIC FUNCTIONS ───────────────
+-- ── STRING & NUMERIC FUNCTIONS ──
 
 -- Q36. Full name concatenation
 SELECT CONCAT(first_name, ' ', last_name) AS "Full Name"
@@ -185,7 +185,7 @@ SELECT ABS(-50000) AS absolute_value;
 -- Q40. Round average salary
 SELECT ROUND(AVG(salary), 2) AS avg_salary FROM employee;
 
--- ── ADVANCED QUERIES ─────────────────────────
+-- ── ADVANCED QUERIES ─
 
 -- Q41. First 3 employees by hire date desc
 SELECT * FROM employee
@@ -226,7 +226,7 @@ LIMIT 1;
 SELECT * FROM employee
 WHERE hire_date >= DATE_SUB(CURDATE(), INTERVAL 90 DAY);
 
--- ── DELETION & CLEANUP ───────────────────────
+-- ── DELETION & CLEANUP 
 
 -- Q48. Delete employees with salary < 60000
 DELETE FROM employee
@@ -245,22 +245,3 @@ FROM information_schema.tables
 WHERE table_schema = 'company_db';
 -- Step 3: Delete DB after verification
 DROP DATABASE company_db;
-```
-
----
-
-### ✅ STEP 4 – Commit the File
-
-1. Scroll down
-2. Click **"Commit changes"**
-3. Click **"Commit changes"** green button ✅
-
----
-
-### ✅ STEP 5 – Verify
-
-Your repo should show:
-```
-janugreens / SD-12345 branch
-└── SQL/
-    └── sql_assignment.sql ✅
