@@ -1,0 +1,2 @@
+This is dummy file 2
+Created for testing GitHub GUI upload
